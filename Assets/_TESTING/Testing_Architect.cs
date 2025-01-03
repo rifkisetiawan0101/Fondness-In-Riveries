@@ -24,7 +24,8 @@ namespace TESTING
         private void Start() 
         {
             dm = DialogueManager.instance;
-            architect = new DialogueArchitect(dm.dialogueContainer.dialogueText);
+            // architect = new DialogueArchitect(dm.dialogueContainer.dialogueText);
+            architect = new DialogueArchitect(dm.dialogueText);
             architect.buildMethod = DialogueArchitect.BuildMethod.typewriter;
         }
 

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 100f;
+    [SerializeField] private float moveSpeed = 500f;
     private Vector2 movement;
     private Rigidbody2D rb;
     private Animator animator;
@@ -13,46 +15,72 @@ public class PlayerMovement : MonoBehaviour
     public bool isMakTiptoe = false;
     public bool isMakCrouching = false;
 
-    [SerializeField] private Sprite makTiptoe;
-    [SerializeField] private Sprite makCrouching;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    [SerializeField] private MechanicsManager mechanicsManager;
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        mechanicsManager = FindObjectOfType<MechanicsManager>();
     }
 
     private void Update() 
     {
+        animator.SetBool("isMakTiptoe", isMakTiptoe);
+        animator.SetBool("isMakCrouching", isMakCrouching);
+        animator.SetBool("isMakMoving", isMakMoving);
         
-        movement.x = Input.GetAxisRaw("Horizontal");
-
-        if (movement != Vector2.zero)
+        if (!isMakTiptoe && !isMakCrouching && !mechanicsManager.isOpenMechanic) // kondisi jalan normal
         {
-            isMakMoving = true;
-            isMakTiptoe = false;
-            isMakCrouching = false;
-            animator.SetFloat("Horizontal", movement.x);
-            animator.SetFloat("LastHorizontal", movement.x);
+            moveSpeed = 500f;
+            movement.x = Input.GetAxisRaw("Horizontal");
+            if (movement != Vector2.zero)
+            {    
+                isMakMoving = true;
+                isMakTiptoe = false;
+                isMakCrouching = false;
+                animator.SetFloat("Horizontal", movement.x);
+                animator.SetFloat("LastHorizontal", movement.x);
+            }
+            else
+            {
+                isMakMoving = false;
+                animator.SetFloat("Horizontal", 0); // Set ke Idle
+            }
         }
-        else
-        {
-            isMakMoving = false;
-            if (!isMakTiptoe && !isMakCrouching)
+        else if (isMakTiptoe || isMakCrouching && !mechanicsManager.isOpenMechanic)
+        {   
+            moveSpeed = 200f;
+            movement.x = Input.GetAxisRaw("Horizontal");
+            if (movement != Vector2.zero)
+            {
+                animator.SetFloat("Horizontal", movement.x);
+                animator.SetFloat("LastHorizontal", movement.x);
+            }
+            else
             {
                 animator.SetFloat("Horizontal", 0); // Set ke Idle
             }
         }
 
-        animator.SetBool("isMakTiptoe", isMakTiptoe);
-        animator.SetBool("isMakCrouching", isMakCrouching);
+        var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
+        
+        if ((isMakTiptoe == true || isMakCrouching == true) && Input.GetKeyDown(KeyCode.LeftShift)) 
+        {
+            isMakTiptoe = false;
+            isMakCrouching = false;
+            framingTransposer.m_ScreenY = 0.5f;
+            transform.position = new Vector2(transform.position.x, 0);
+        }
 
         // Kondisi Tiptoe
         if (!isMakMoving && Input.GetKeyDown(KeyCode.W))
         {
             isMakTiptoe = true;
             isMakCrouching = false;
-            spriteRenderer.sprite = makTiptoe;
+            framingTransposer.m_ScreenY = 0.6f;
+            transform.position = new Vector2(transform.position.x, 50);
         }
 
         // Kondisi Crouch
@@ -60,7 +88,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isMakCrouching = true;
             isMakTiptoe = false;
-            spriteRenderer.sprite = makCrouching;
+            framingTransposer.m_ScreenY = 0.4f;
+            transform.position = new Vector2(transform.position.x, -50);
         }
     }
 
