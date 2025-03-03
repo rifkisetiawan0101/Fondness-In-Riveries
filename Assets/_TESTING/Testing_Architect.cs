@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEngine;
+using DIALOGUE;
 
 namespace TESTING
 {
@@ -39,12 +39,12 @@ namespace TESTING
 
             if(Input.GetKeyDown(KeyCode.Space)) 
             {
-                if (architect.isTextBuilding)
+                if (architect.isBuilding)
                 {
                     architect.ForceComplete();
                 }
                 else
-                    architect.BuildText(lines[Random.Range(0, lines.Length)]);
+                    architect.BuildDialogue(lines[Random.Range(0, lines.Length)]);
             }
             // else if(Input.GetKeyDown(KeyCode.B)) 
             // {
