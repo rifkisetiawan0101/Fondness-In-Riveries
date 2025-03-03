@@ -1,0 +1,116 @@
+{
+    "name": "MovementMak",
+    "maps": [
+        {
+            "name": "MovementMak",
+            "id": "f5eb854e-968a-4d70-8301-9cc6370d6d21",
+            "actions": [
+                {
+                    "name": "Walk",
+                    "type": "Value",
+                    "id": "b1ee1888-14eb-42eb-9981-7f5faa12be11",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Tiptoe",
+                    "type": "Button",
+                    "id": "cc1fc858-a9b8-4da8-b175-b0ac56958444",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Crouching",
+                    "type": "Button",
+                    "id": "aefc72e3-d7da-47e0-a4a7-13b6fcd85f29",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Normal",
+                    "type": "Button",
+                    "id": "703ee2cd-2797-4906-8a17-d202a363eca7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "2D Vector Keyboard",
+                    "id": "89115a34-5883-4885-b564-78df0385ab63",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "Left",
+                    "id": "f6126a1c-d024-4b67-896d-d1a6de2c296c",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Right",
+                    "id": "50ff4466-ce1f-4f4f-8cbf-ac3d164a7301",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Walk",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "aabafb95-ff5e-485b-ab6d-a56694d25451",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Tiptoe",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "97f548e0-dc61-4c8c-a3d6-ed69a5102c28",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Crouching",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "03c7a092-4654-430d-bbdf-9e0e7f8f6740",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Normal",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
