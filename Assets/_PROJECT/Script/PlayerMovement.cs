@@ -85,7 +85,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnWalk(InputValue value)
     {
-        movement = value.Get<Vector2>();
+        if(mechanicsManager.isGameStart)
+        {
+            movement = value.Get<Vector2>();
+        }
     }
 
     private void OnTiptoe(InputValue value)
