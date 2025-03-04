@@ -28,6 +28,8 @@ public class ObjectTrigger : MonoBehaviour
 
         hoverSprite = GetComponent<SpriteRenderer>();
         hoverSprite.sprite = null;
+
+        mechanicsManager.currentMechanic = MechanicName.none;
     }
 
     private void Update() 
@@ -268,6 +270,7 @@ public class ObjectTrigger : MonoBehaviour
                 eToInteract.SetActive(true);
             }
             mechanicsManager.currentTriggerMechanic = mechanicName.ToString();
+            mechanicsManager.currentMechanic = mechanicName;
         }
     }
 
@@ -279,6 +282,7 @@ public class ObjectTrigger : MonoBehaviour
             eToInteract.SetActive(false);
         }
         mechanicsManager.currentTriggerMechanic = MechanicName.none.ToString();
+        mechanicsManager.currentMechanic = MechanicName.none;
     }
 
     private void OpenMechanics(ref bool booleanMechanics)

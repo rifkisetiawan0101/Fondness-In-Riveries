@@ -6,6 +6,7 @@ public class SwingBabyToSleep : MonoBehaviour
 {
     public RectTransform baby;
     public RectTransform basket;
+    public RectTransform basketWithBaby;
     public RectTransform guideLeft;
     public RectTransform guideRight;
     public RectTransform babyPanel;
@@ -29,6 +30,8 @@ public class SwingBabyToSleep : MonoBehaviour
         guideLeft.gameObject.SetActive(true);
         guideRight.gameObject.SetActive(false);
         babyPanel.gameObject.SetActive(false);
+        basket.gameObject.SetActive(true);
+        basketWithBaby.gameObject.SetActive(false);
 
         basketButton = basket.GetComponent<Button>();
         basketOutline = basket.GetComponent<Outline>();
@@ -80,10 +83,12 @@ public class SwingBabyToSleep : MonoBehaviour
     private IEnumerator PlayBabyPanel()
     {
         babyPanel.gameObject.SetActive(true);
+        basketWithBaby.gameObject.SetActive(true);
         
         yield return new WaitForSeconds(delayLength);
         
         babyPanel.gameObject.SetActive(false);
+        basket.gameObject.SetActive(false);
         
         yield return new WaitForSeconds(delayLength);
 
@@ -93,7 +98,8 @@ public class SwingBabyToSleep : MonoBehaviour
     private IEnumerator DisableMechanic()
     {
         yield return new WaitForSeconds(delayLength);
-        MechanicsManager.Instance.isSwingingBabyToSleepPlayed = true;
+
+        GetComponent<DisableMechanic>().DisableThisMechanic();
     }
 
     void MoveBaby(float target)
