@@ -1,5 +1,5 @@
 {
-    "name": "MovementMak",
+    "name": "PlayerInput",
     "maps": [
         {
             "name": "MovementMak",
@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Tiptoe",
+                    "name": "Reach",
                     "type": "Button",
                     "id": "cc1fc858-a9b8-4da8-b175-b0ac56958444",
                     "expectedControlType": "Button",
@@ -83,7 +83,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Tiptoe",
+                    "action": "Reach",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

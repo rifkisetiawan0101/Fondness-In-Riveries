@@ -14,9 +14,16 @@ namespace DIALOGUE
             Debug.Log($"Parsing line: '{rawLine}'");
             (string speaker, string dialogue, string commands) = RipContent(rawLine);
 
-            Debug.Log($"Speaker = '{speaker}'\nDialogue = '{dialogue}'\nCommands = '{commands}'");
+            // Format the text with rich text tags for color and size
+            string formattedText = $"<color=#C8C4C1><size=20>{speaker}</size></color>\n<color=#FFFFFF><size=24>{dialogue}</size></color>";
+            string formattedSpeaker = $"<color=#C8C4C1><size=20>{speaker}</size></color>";
+            string formattedDialogue = $"<color=#FFFFFF><size=24>{dialogue}</size></color>";
+            
+            Debug.Log($"Formatted Text = '{formattedText}'");
+            return new DIALOGUE_LINE(formattedSpeaker, formattedDialogue, commands);
 
-            return new DIALOGUE_LINE(speaker, dialogue, commands);
+            // Debug.Log($"Speaker = '{speaker}'\nDialogue = '{dialogue}'\nCommands = '{commands}'");
+            // return new DIALOGUE_LINE(speaker, dialogue, commands);
         }
 
         private static (string, string, string) RipContent(string rawLine)

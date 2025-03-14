@@ -4,6 +4,7 @@ using UnityEngine.Video;
 
 public class GivingMilk : MonoBehaviour
 {
+    [SerializeField] private GameObject currentMechanic;
     public Animator animator; 
     public string animationTrigger = "PlayAnimation"; 
     public GameObject cutScene;
@@ -11,7 +12,6 @@ public class GivingMilk : MonoBehaviour
 
     private bool isMechanicDone;
     [SerializeField] private GameObject triggerUI;
-    [SerializeField] private GameObject currentMechanic;
     [SerializeField] private GameObject giveMilk;
     [SerializeField] private GameObject arrel;
     [SerializeField] private GameObject arrelBawa;
@@ -38,7 +38,7 @@ public class GivingMilk : MonoBehaviour
             MechanicsManager.Instance.isGetBackBaby = true;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && isMechanicActive && MechanicsManager.Instance.isGivingMilkDialoguePlayed && !MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
+        if (Input.GetKeyDown(KeyCode.Space) && isMechanicActive && MechanicsManager.Instance.isGivingMilkDialoguePlayed && !MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
         {   
             StartCoroutine(SetBoolAfterDelay());
             botolBawa.SetActive(false);
@@ -49,7 +49,7 @@ public class GivingMilk : MonoBehaviour
             isMechanicActive = false;
             isMechanicDone = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && isMechanicActive && MechanicsManager.Instance.isGivingMilkPlayed2 && MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
+        else if (Input.GetKeyDown(KeyCode.Space) && isMechanicActive && MechanicsManager.Instance.isGivingMilkPlayed2 && MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
         {
             MechanicsManager.Instance.isCarryingArrelToBath = true;
             Debug.Log($"isCarryingArrelToBath: {MechanicsManager.Instance.isCarryingArrelToBath}");
@@ -59,7 +59,7 @@ public class GivingMilk : MonoBehaviour
             isMechanicActive = false;
             MechanicsManager.Instance.isOpenMechanic = false;
         }
-        else if (Input.GetKeyDown(KeyCode.Escape) && isMechanicActive && MechanicsManager.Instance.isGivingMilkPlayed3 && MechanicsManager.Instance.isBathingBabyPlayed && MechanicsManager.Instance.isGetBackBaby) 
+        else if (Input.GetKeyDown(KeyCode.Space) && isMechanicActive && MechanicsManager.Instance.isGivingMilkPlayed3 && MechanicsManager.Instance.isBathingBabyPlayed && MechanicsManager.Instance.isGetBackBaby) 
         {
             arrelBawa.SetActive(false);
             currentMechanic.SetActive(false);

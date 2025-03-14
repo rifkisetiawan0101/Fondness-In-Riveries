@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class BoilWater : MonoBehaviour
 {
+    [SerializeField] private GameObject currentMechanic;
     public Animator animator;
     public string animationTrigger = "PlayAnimation";
     public bool isMechanicActive;
 
     private bool isMechanicDone;
     [SerializeField] private GameObject triggerUI;
-    [SerializeField] private GameObject currentMechanic;
 
     void Update()
     {
@@ -19,7 +19,7 @@ public class BoilWater : MonoBehaviour
             StartCoroutine(PlayAnimation());
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && isMechanicDone)
+        if (Input.GetKeyDown(KeyCode.Space) && isMechanicDone)
         {   
             triggerUI.SetActive(true);
             currentMechanic.SetActive(false);

@@ -21,7 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
     public bool isMakMoving = false;
-    public bool isMakTiptoe = false;
+    public bool isMakReach = false;
     public bool isMakCrouching = false;
 
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
@@ -39,19 +39,19 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update() 
     {
-        animator.SetBool("isMakTiptoe", isMakTiptoe);
+        animator.SetBool("isMakReach", isMakReach);
         animator.SetBool("isMakCrouching", isMakCrouching);
         animator.SetBool("isMakMoving", isMakMoving);
         
         if (mechanicsManager.isGameStart && !mechanicsManager.isOpenMechanic && !pauseMenu.isMenuActive && !toDoList.isTDLOpen)
         {
-            if (!isMakTiptoe && !isMakCrouching) // kondisi jalan normal
+            if (!isMakReach && !isMakCrouching) // kondisi jalan normal
             {
                 moveSpeed = 500f;
                 if (movement != Vector2.zero)
                 {    
                     isMakMoving = true;
-                    isMakTiptoe = false;
+                    isMakReach = false;
                     isMakCrouching = false;
                     animator.SetFloat("Horizontal", movement.x);
                     animator.SetFloat("LastHorizontal", movement.x);
@@ -62,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
                     animator.SetFloat("Horizontal", 0); // Set ke Idle
                 }
             }
-            else if (isMakTiptoe || isMakCrouching)
+            else if (isMakReach || isMakCrouching)
             {   
                 moveSpeed = 200f;
                 if (movement != Vector2.zero)
@@ -85,20 +85,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnWalk(InputValue value)
     {
-        if(mechanicsManager.isGameStart)
+        if(mechanicsManager.isGameStart && !mechanicsManager.isOpenMechanic && !pauseMenu.isMenuActive && !toDoList.isTDLOpen)
         {
             movement = value.Get<Vector2>();
         }
     }
 
-    private void OnTiptoe(InputValue value)
+    private void OnReach(InputValue value)
     {
-        bool isTiptoePressed = value.isPressed;
+        bool isReachPressed = value.isPressed;
         
         var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        if (!isMakMoving && isTiptoePressed)
+        if (!isMakMoving && isReachPressed)
         {
-            isMakTiptoe = true;
+            isMakReach = true;
             isMakCrouching = false;
             framingTransposer.m_ScreenY = 0.6f;
             transform.position = new Vector2(transform.position.x, 50);
@@ -113,7 +113,7 @@ public class PlayerMovement : MonoBehaviour
         if (!isMakMoving && isCrouchPressed)
         {
             isMakCrouching = true;
-            isMakTiptoe = false;
+            isMakReach = false;
             framingTransposer.m_ScreenY = 0.4f;
             transform.position = new Vector2(transform.position.x, -50);
         }
@@ -124,9 +124,9 @@ public class PlayerMovement : MonoBehaviour
         bool isNormalPressed = value.isPressed;
         
         var framingTransposer = virtualCamera.GetCinemachineComponent<CinemachineFramingTransposer>();
-        if ((isMakTiptoe == true || isMakCrouching == true) && isNormalPressed)
+        if ((isMakReach == true || isMakCrouching == true) && isNormalPressed)
         {
-            isMakTiptoe = false;
+            isMakReach = false;
             isMakCrouching = false;
             framingTransposer.m_ScreenY = 0.5f;
             transform.position = new Vector2(transform.position.x, 0);

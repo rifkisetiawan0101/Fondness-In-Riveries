@@ -25,7 +25,7 @@ public class MakingMilkMechanic : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && isMechanicDone)
+        if (Input.GetKeyDown(KeyCode.Space) && isMechanicDone)
         {
             currentMechanic.SetActive(false);
             MechanicsManager.Instance.isOpenMechanic = false;

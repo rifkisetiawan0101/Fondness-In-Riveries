@@ -1,12 +1,11 @@
 using System.Collections;
 using DIALOGUE;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PhotoMemoryAct_1 : MonoBehaviour
 {
-    [SerializeField] private GameObject photoMechanic;
+    [SerializeField] private GameObject currentMechanic;
     [SerializeField] private GameObject repairMechanic;
     [SerializeField] private GameObject uiMoveCamera;
     [SerializeField] private GameObject cameraAndHand;
@@ -54,7 +53,7 @@ public class PhotoMemoryAct_1 : MonoBehaviour
 
         if (MechanicsManager.Instance.isPhotoTaken && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
         {
-            photoMechanic.SetActive(false);
+            currentMechanic.SetActive(false);
             repairMechanic.SetActive(false);
             MechanicsManager.Instance.isOpenMechanic = false;
         }

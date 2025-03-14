@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class PourWaterManager : MonoBehaviour
 {
+    [SerializeField] private GameObject currentMechanic;
     public Animator coldWaterAnimator;
     public Animator hotWaterAnimator;
     public Image tubImage;
@@ -26,24 +27,27 @@ public class PourWaterManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Q) && canPourCold && coldWaterCount < jmlTuanganSelesai)
+        if (MechanicsManager.Instance.isBoilWaterPlayed)
         {
-            PourColdWater();
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && canPourHot && hotWaterCount < jmlTuanganSelesai)
-        {
-            PourHotWater();
-        }
+            if (Input.GetKeyDown(KeyCode.Q) && canPourCold && coldWaterCount < jmlTuanganSelesai)
+            {
+                PourColdWater();
+            }
+            else if (Input.GetKeyDown(KeyCode.E) && canPourHot && hotWaterCount < jmlTuanganSelesai)
+            {
+                PourHotWater();
+            }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && isMechanicDone)
-        {
-            objBathingBaby.SetActive(true);
-            objPourWater.SetActive(false);
-            gameObject.SetActive(false);
-            MechanicsManager.Instance.isOpenMechanic = false;
-            isMechanicDone = false;
-            Destroy(baskom);
-            //arrel.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.Escape) && isMechanicDone)
+            {
+                objBathingBaby.SetActive(true);
+                objPourWater.SetActive(false);
+                currentMechanic.SetActive(false);
+                MechanicsManager.Instance.isOpenMechanic = false;
+                isMechanicDone = false;
+                Destroy(baskom);
+                //arrel.SetActive(true);
+            }
         }
     }
 

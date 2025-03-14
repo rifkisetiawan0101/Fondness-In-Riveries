@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class GetWater : MonoBehaviour
 {
+    [SerializeField] private GameObject currentMechanic; 
     public Animator animator;
     public string animationTrigger = "PlayAnimation";
     public bool isMechanicActive;
@@ -10,7 +11,6 @@ public class GetWater : MonoBehaviour
     private bool isMechanicDone;
     [SerializeField] private GameObject baskom;
     [SerializeField] private GameObject triggerUI;
-    [SerializeField] private GameObject currentMechanic; 
 
     void Update()
     {   
@@ -20,7 +20,7 @@ public class GetWater : MonoBehaviour
             StartCoroutine(PlayAnimation());
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && isMechanicDone)
+        if (Input.GetKeyDown(KeyCode.Space) && isMechanicDone)
         {   
             triggerUI.SetActive(true);
             currentMechanic.SetActive(false);

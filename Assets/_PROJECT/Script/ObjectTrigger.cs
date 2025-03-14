@@ -11,23 +11,23 @@ public class ObjectTrigger : MonoBehaviour
     [SerializeField] private GameObject eToInteract;
     [SerializeField] private GameObject mechanics;
     [SerializeField] private bool playerInTrigger = false;
-    private BoxCollider2D myCollider2D;
+    private BoxCollider2D objCollider2D;
+    private Animator objAnimator;
     
     [Header("Hover Sprite")]
-    private SpriteRenderer hoverSprite;
-    [SerializeField] private Sprite hoverBed;
-    [SerializeField] private Sprite hoverCurtain;
-    [SerializeField] private Sprite hoverSwitchLamp;
-    [SerializeField] private Sprite hoverDoor;
+    private SpriteRenderer objHoverSprite;
 
     private void Start() 
     {
         mechanicsManager = FindObjectOfType<MechanicsManager>();
-        myCollider2D = GetComponent<BoxCollider2D>();
-        myCollider2D.enabled = false;
+        objCollider2D = GetComponent<BoxCollider2D>();
+        objCollider2D.enabled = false;
+        objAnimator = GetComponent<Animator>();
+        if (objAnimator != null)
+        { objAnimator.enabled = false; }
 
-        hoverSprite = GetComponent<SpriteRenderer>();
-        hoverSprite.sprite = null;
+        objHoverSprite = GetComponent<SpriteRenderer>();
+        objHoverSprite.enabled = false;
     }
 
     private void Update() 
@@ -50,43 +50,23 @@ public class ObjectTrigger : MonoBehaviour
         switch(mechanicName)
         {
             case MechanicName.swingingBabyToSleep:
-                if (!mechanicsManager.isSwingingBabyToSleepPlayed) { 
-                    myCollider2D.enabled = true;
-                    hoverSprite.sprite = hoverBed;
-                } else { 
-                    myCollider2D.enabled = false;
-                    hoverSprite.sprite = null;
-                }
+                if (!mechanicsManager.isSwingingBabyToSleepPlayed && !DialogueManager.instance.isRunningConversation) 
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
                 break;
 
             case MechanicName.closeCurtain:
-                if (mechanicsManager.isSwingingBabyToSleepPlayed && !mechanicsManager.isCloseCurtainPlayed) { 
-                    myCollider2D.enabled = true;
-                    hoverSprite.sprite = hoverCurtain;
-                } else { 
-                    myCollider2D.enabled = false;
-                    hoverSprite.sprite = null;
-                }
+                if (mechanicsManager.isSwingingBabyToSleepPlayed && !mechanicsManager.isCloseCurtainPlayed) 
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
                 break;
 
             case MechanicName.turnOffLamp:
-                if (mechanicsManager.isCloseCurtainPlayed && !mechanicsManager.isTurnOffLampPlayed) { 
-                    myCollider2D.enabled = true;
-                    hoverSprite.sprite = hoverSwitchLamp;
-                } else {
-                    myCollider2D.enabled = false;
-                    hoverSprite.sprite = null;
-                }
+                if (mechanicsManager.isCloseCurtainPlayed && !mechanicsManager.isTurnOffLampPlayed) 
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
                 break;
 
             case MechanicName.doorLivingRoom:
-                if (mechanicsManager.isTurnOffLampPlayed) {
-                    myCollider2D.enabled = true;
-                    hoverSprite.sprite = hoverDoor;
-                } else { 
-                    myCollider2D.enabled = false;
-                    hoverSprite.sprite = null;
-                }
+                if (mechanicsManager.isTurnOffLampPlayed) 
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; objAnimator.enabled = false; }
                 break;
 
             case MechanicName.interactPhoto1:
@@ -94,65 +74,65 @@ public class ObjectTrigger : MonoBehaviour
             case MechanicName.interactPhoto3:
             case MechanicName.interactPhoto4:
                 if (mechanicsManager.isTurnOffLampPlayed)
-                { myCollider2D.enabled = true; }
+                { objCollider2D.enabled = true; }
                 break;
 
             case MechanicName.cameraPolaroid:
                 if (mechanicsManager.isTurnOffLampPlayed && !mechanicsManager.isCameraCollected)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.toDoList:
                 if (mechanicsManager.isCameraCollected && !mechanicsManager.isTDLCollected)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.makingMilk:
                 if (mechanicsManager.isTDLCollected && !mechanicsManager.isMakingMilkPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.givingMilk:
                 if (mechanicsManager.isMakingMilkPlayed && !mechanicsManager.isGivingMilkPlayed && !mechanicsManager.isCarryingArrelToBath)
-                { myCollider2D.enabled = true; } 
+                { objCollider2D.enabled = true; } 
                 else if (mechanicsManager.isPourWaterPlayed && !mechanicsManager.isCarryingArrelToBath && !mechanicsManager.isGetBackBaby)
-                { myCollider2D.enabled = true; } 
-                else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } 
+                else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.getWater:
                 if (mechanicsManager.isGivingMilkPlayed && !mechanicsManager.isGetWaterPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.boilWater:
                 if (mechanicsManager.isGetWaterPlayed && !mechanicsManager.isBoilWaterPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.pourWater:
                 if (mechanicsManager.isBoilWaterPlayed && !mechanicsManager.isPourWaterPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.bathingBaby:
                 if (!mechanicsManager.isBathingBabyPlayed && mechanicsManager.isCarryingArrelToBath)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.repairSwing:
                 if (mechanicsManager.isBathingBabyPlayed && !mechanicsManager.isRepairSwingPlayed)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.photoMemoryAct1:
                 if (mechanicsManager.isRepairSwingPlayed && !mechanicsManager.isPhotoTaken)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
 
             case MechanicName.diaryBook:
                 if (mechanicsManager.isPhotoTaken && !mechanicsManager.isOpenMechanic && !mechanicsManager.isDiaryOpened)
-                { myCollider2D.enabled = true; } else { myCollider2D.enabled = false; }
+                { objCollider2D.enabled = true; } else { objCollider2D.enabled = false; }
                 break;
         }
     }
@@ -174,7 +154,7 @@ public class ObjectTrigger : MonoBehaviour
                 break;
 
             case MechanicName.doorLivingRoom:
-                SceneManager.LoadScene("Act-1 Ruang Tamu");
+                SceneManager.LoadScene("Act-1_Scene2_RuangTamu");
                 break;
 
             case MechanicName.interactPhoto1:
@@ -265,6 +245,8 @@ public class ObjectTrigger : MonoBehaviour
             playerInTrigger = true;
             if (!mechanicsManager.isOpenMechanic)
             {
+                objHoverSprite.enabled = true;
+                objAnimator.enabled = true;
                 eToInteract.SetActive(true);
             }
             mechanicsManager.currentTriggerMechanic = mechanicName.ToString();
@@ -276,6 +258,9 @@ public class ObjectTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInTrigger = false;
+            objHoverSprite.enabled = false;
+            objAnimator.enabled = false;
+            objAnimator.Rebind();
             eToInteract.SetActive(false);
         }
         mechanicsManager.currentTriggerMechanic = MechanicName.none.ToString();

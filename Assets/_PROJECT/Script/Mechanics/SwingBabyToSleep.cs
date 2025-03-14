@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using DIALOGUE;
 
 public class SwingBabyToSleep : MonoBehaviour
 {
+    [SerializeField] private GameObject curentMechanic;
     public RectTransform baby;
     public RectTransform basket;
+    public RectTransform basketWithBaby;
     public RectTransform guideLeft;
     public RectTransform guideRight;
     public RectTransform babyPanel;
@@ -29,6 +32,8 @@ public class SwingBabyToSleep : MonoBehaviour
         guideLeft.gameObject.SetActive(true);
         guideRight.gameObject.SetActive(false);
         babyPanel.gameObject.SetActive(false);
+        basket.gameObject.SetActive(true);
+        basketWithBaby.gameObject.SetActive(false);
 
         basketButton = basket.GetComponent<Button>();
         basketOutline = basket.GetComponent<Outline>();
@@ -56,16 +61,20 @@ public class SwingBabyToSleep : MonoBehaviour
         if (DialogueTrigger.Instance.isSwingingBaby_3Played && !isSwingDialogueTriggered)
         {
             isSwingDialogueTriggered = true;
-
             basketOutline.enabled = true;
             basketButton.interactable = true;
         }
 
-        if (DialogueTrigger.Instance.isPutBabySleep_4Played && !isBabySleepDialogueTriggered)
-        {
-            isBabySleepDialogueTriggered = true;
+        // if (DialogueTrigger.Instance.isPutBabySleep_4Played && !isBabySleepDialogueTriggered)
+        // {
+        //     isBabySleepDialogueTriggered = true;
 
-            StartCoroutine(DisableMechanic());
+        //     StartCoroutine(DisableMechanic());
+        // }
+        if (MechanicsManager.Instance.isSwingingBabyToSleepPlayed && DialogueTrigger.Instance.isPutBabySleep_4Played && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
+        {
+            curentMechanic.SetActive(false);
+            MechanicsManager.Instance.isOpenMechanic = false;
         }
     }
     
@@ -80,19 +89,16 @@ public class SwingBabyToSleep : MonoBehaviour
     private IEnumerator PlayBabyPanel()
     {
         babyPanel.gameObject.SetActive(true);
+        basketWithBaby.gameObject.SetActive(true);
         
         yield return new WaitForSeconds(delayLength);
         
         babyPanel.gameObject.SetActive(false);
+        basket.gameObject.SetActive(false);
         
         yield return new WaitForSeconds(delayLength);
 
         MechanicsManager.Instance.isPutBabySleep = true;
-    }
-
-    private IEnumerator DisableMechanic()
-    {
-        yield return new WaitForSeconds(delayLength);
         MechanicsManager.Instance.isSwingingBabyToSleepPlayed = true;
     }
 
@@ -133,4 +139,11 @@ public class SwingBabyToSleep : MonoBehaviour
             guideRight.gameObject.SetActive(false);
         }
     }
+
+    // private IEnumerator DisableMechanic()
+    // {
+    //     yield return new WaitForSeconds(delayLength);
+
+    //     GetComponent<DisableMechanic>().DisableThisMechanic();
+    // }
 }

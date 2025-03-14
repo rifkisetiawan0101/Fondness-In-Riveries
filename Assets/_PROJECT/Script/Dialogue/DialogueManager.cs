@@ -30,6 +30,11 @@ namespace DIALOGUE
         private bool isInitialized = false;
         private bool checkStart;
 
+        private void Start() {
+            dialogueContainer = GameObject.Find("DialogueContainer");
+            dialogueText = GameObject.Find("DialogueText").GetComponent<TextMeshProUGUI>();
+        }
+
         private void Initialize()
         {
             if (isInitialized)
@@ -83,7 +88,7 @@ namespace DIALOGUE
         [SerializeField] private TextAsset currentDialogue;
         private void DialogueCheck()
         {
-            if (SceneManager.GetActiveScene().name == "Act-1 Kamar Ibu" || SceneManager.GetActiveScene().name == "Act-1 Ruang Tamu")
+            if (SceneManager.GetActiveScene().name == "Act-1_Scene1_KamarIbu" || SceneManager.GetActiveScene().name == "Act-1_Scene2_RuangTamu")
             {
                 currentDialogue = triggerAct_1.currentDialogue;
             }

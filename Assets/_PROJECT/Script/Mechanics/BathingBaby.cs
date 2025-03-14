@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 public class BathingBaby : MonoBehaviour
 {
+    [SerializeField] private GameObject currentMechanic;
     public bool isMechanicActive;
     private bool isMechanicDone;
     private bool isWashing;
@@ -13,7 +14,6 @@ public class BathingBaby : MonoBehaviour
     private float washingDuration = 5f;
 
     [SerializeField] private GameObject triggerUI;
-    [SerializeField] private GameObject currentMechanic;
     [SerializeField] private Image arrelTub;
     [SerializeField] private Sprite ArrelEmptyTub;
     [SerializeField] private Sprite ArrelTub;
@@ -90,7 +90,7 @@ public class BathingBaby : MonoBehaviour
             Debug.Log("Klik tidak terdeteksi pada arrelTub! Pastikan klik pada objek yang benar.");
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape) && MechanicsManager.Instance.isBathingBabyPlayed && isMechanicDone == false)
+        if (Input.GetKeyDown(KeyCode.Space) && MechanicsManager.Instance.isBathingBabyPlayed && isMechanicDone == false)
         {
             currentMechanic.SetActive(false);
             isMechanicActive = false;

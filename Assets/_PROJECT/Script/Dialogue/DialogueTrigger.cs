@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DIALOGUE;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DialogueTrigger : MonoBehaviour
 {
@@ -164,7 +165,8 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] public bool isTurnOffLamp_6Played = false;
     private IEnumerator PlayTurnOffLamp()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isTurnOffLampOpened);
+        yield return new WaitUntil (() => !MechanicsManager.Instance.isOpenMechanic);
+        yield return new WaitForSeconds(1f);
         currentDialogue = turnOffLamp_6;
         yield return new WaitForSeconds(0.5f);
         DialogueManager.instance.StartConversation();
@@ -183,8 +185,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] public bool isAfterTurnOffLamp_7Played = false;
     private IEnumerator PlayAfterTurnOffLamp()
     {
-        yield return new WaitUntil (() => MechanicsManager.Instance.isTurnOffLampPlayed);
-        yield return new WaitUntil (() => !MechanicsManager.Instance.isOpenMechanic);
+        yield return new WaitUntil (() => MechanicsManager.Instance.isTurnOffLampPlayed && !MechanicsManager.Instance.isOpenMechanic);
         currentDialogue = afterTurnOffLamp_7;
         yield return new WaitForSeconds(0.5f);
         DialogueManager.instance.StartConversation();
@@ -278,6 +279,7 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private bool isSearchCamera_12Played;
     private IEnumerator PlaySearchCamera()
     {
+        yield return new WaitUntil (() => SceneManager.GetActiveScene().name == "Act-1_Scene2_RuangTamu");
         currentDialogue = searchCamera_12;
         yield return new WaitForSeconds(0.5f);
         DialogueManager.instance.StartConversation();
