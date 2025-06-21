@@ -5,21 +5,30 @@ using DIALOGUE;
 
 public class CloseCurtain : MonoBehaviour
 {
-    [SerializeField] private GameObject curentMechanic; 
-    public RectTransform guideRight;
-    public RectTransform guideLeft;
+    public GameObject closeCurtainBackground;
+    public RectTransform background;
+    public RectTransform shadowLeft, shadowRight;
+    public RectTransform[] leftFrames;
+    public RectTransform[] rightFrames;
     public Slider sliderLeft, sliderRight;
-
     public float delayLength = 3f;
 
-    bool isRightSwiped = false;
-    bool isLeftSwiped = false;
+    [SerializeField] private SpaceMechanic spaceMechanic;
+    public bool isRightSwiped = false;
+    public bool isLeftSwiped = false;
     bool isMechanicBegin = false;
+    public bool isCurtainReady = false;
+
+    [SerializeField] private GameObject lightWindow;
 
     void Start()
     {
-        guideRight.gameObject.SetActive(false);
-        guideLeft.gameObject.SetActive(false);
+        spaceMechanic = GetComponent<SpaceMechanic>();
+
+        closeCurtainBackground.SetActive(false);
+
+        shadowLeft.gameObject.SetActive(true);
+        shadowRight.gameObject.SetActive(true);
 
         sliderRight.gameObject.SetActive(false);
         sliderLeft.gameObject.SetActive(false);
@@ -33,76 +42,87 @@ public class CloseCurtain : MonoBehaviour
 
     void Update()
     {
-        if (DialogueTrigger.Instance.isCloseCurtain_5Played)
+        if (MechanicsManager.Instance.isCloseCurtainOpened && isCurtainReady)
         {
             if (!isMechanicBegin)
             {
-                guideRight.gameObject.SetActive(true);
-                guideLeft.gameObject.SetActive(false);
+                sliderRight.gameObject.SetActive(false);
+                sliderLeft.gameObject.SetActive(true);
 
-                sliderRight.gameObject.SetActive(true);
-                sliderLeft.gameObject.SetActive(false);    
+                shadowLeft.GetComponent<FadeImage>().FadeIn(.5f);
+                sliderLeft.GetComponent<FadeImage>().FadeIn(.5f);
 
                 isMechanicBegin = true;
             }
-            
-            // Detect when the left mouse button is released
-            if (!isRightSwiped || !isLeftSwiped)
-            {
-                if (!isRightSwiped && sliderRight.value > .9f)
+
+            // if (!isRightSwiped || !isLeftSwiped)
+            // {
+                if (!isLeftSwiped && !isRightSwiped && sliderLeft.value > .9f)
                 {
-                    Debug.Log("Swiped Left");
-                    
-                    isRightSwiped = true;
-                    isLeftSwiped = false;
+                    Debug.Log("Left done");
 
-                    sliderRight.value = 1f;
+                    StartCoroutine(FadeInLeftFrames());
+                    IEnumerator FadeInLeftFrames()
+                    {
+                        isLeftSwiped = true;
+                        isRightSwiped = false;
 
-                    sliderRight.gameObject.SetActive(false);
-                    sliderLeft.gameObject.SetActive(true);
+                        sliderLeft.value = 1f;
 
-                    guideRight.gameObject.SetActive(false);
-                    guideLeft.gameObject.SetActive(true);
+                        shadowLeft.GetComponent<FadeImage>().FadeOut(.5f);
+                        sliderLeft.GetComponent<FadeImage>().FadeOut(.5f);
+
+                        yield return new WaitForSeconds(1f);
+                        leftFrames[0].GetComponent<FadeImage>().FadeIn(.5f);
+                        yield return new WaitForSeconds(1.5f);
+                        leftFrames[1].GetComponent<FadeImage>().FadeIn(.5f);
+                        yield return new WaitForSeconds(3f);
+
+                        sliderRight.gameObject.SetActive(true);
+                        shadowRight.GetComponent<FadeImage>().FadeIn(.5f);
+                        sliderRight.GetComponent<FadeImage>().FadeIn(.5f);
+                    }
                 }
-                else if (isRightSwiped && !isLeftSwiped && sliderLeft.value > .9f)
+                else if (isLeftSwiped && !isRightSwiped && sliderRight.value > .9f)
                 {
-                    Debug.Log("Swiped Right");
+                    Debug.Log("Right done");
 
-                    isRightSwiped = true;
-                    isLeftSwiped = true;
+                    StartCoroutine(FadeInRightFrames());
+                    IEnumerator FadeInRightFrames()
+                    {
+                        isRightSwiped = true;
+                        isLeftSwiped = true;
 
-                    sliderLeft.value = 1f;
+                        sliderRight.value = 1f;
 
-                    sliderRight.gameObject.SetActive(false);
-                    sliderLeft.gameObject.SetActive(false);
+                        shadowRight.GetComponent<FadeImage>().FadeOut(.5f);
+                        sliderRight.GetComponent<FadeImage>().FadeOut(.5f);
 
-                    guideLeft.gameObject.SetActive(false);
-                    guideRight.gameObject.SetActive(false);
-                }
+                        yield return new WaitForSeconds(1f);
+                        rightFrames[0].GetComponent<FadeImage>().FadeIn(.5f);
+                        yield return new WaitForSeconds(1.5f);
+                        rightFrames[1].GetComponent<FadeImage>().FadeIn(.5f);
+                        yield return new WaitForSeconds(1.5f);
 
-                // Check if both swipes are completed
-                if (isRightSwiped && isLeftSwiped)
-                {
-                    Debug.Log("Both swipes completed");
-
-                    // StartCoroutine(DisableMechanic());
-                    MechanicsManager.Instance.isCloseCurtainPlayed = true;
-                    // You can add further actions here
+                        MechanicsManager.Instance.isCloseCurtainPlayed = true;
+                        closeCurtainBackground.SetActive(true);
+                    }
                 }
             }
 
-            if (MechanicsManager.Instance.isCloseCurtainPlayed && !DialogueManager.instance.isRunningConversation && Input.GetKeyDown(KeyCode.Space))
+            if (MechanicsManager.Instance.isCloseCurtainPlayed && !DialogueManager.instance.isRunningConversation)
             {
-                curentMechanic.SetActive(false);
-                MechanicsManager.Instance.isOpenMechanic = false;
+                StartCoroutine(spaceMechanic.CloseMechanic(0.4f));
+                lightWindow.SetActive(false);
             }
+        // }
+
+        if (MechanicsManager.Instance.isCloseCurtainPlayed && !activeOnce)
+        {
+            closeCurtainBackground.SetActive(true);
+            activeOnce = true;
         }
     }
 
-    // private IEnumerator DisableMechanic()
-    // {
-    //     yield return new WaitForSeconds(delayLength);
-
-    //     GetComponent<DisableMechanic>().DisableThisMechanic();
-    // }
+    private bool activeOnce;
 }

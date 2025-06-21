@@ -11,14 +11,15 @@ public class SendokSusu : MonoBehaviour
     private bool isSendokKosong = true;
     private bool isDragging = false;
 
+    [SerializeField] private GameObject hoverBotol;
+    [SerializeField] private GameObject hoverKaleng;
+
     void Start()
     {
         sendokSpriteImage = GetComponent<Image>();
 
-        if (makingMilkScript == null)
-        {
-            Debug.LogError("Referensi ke MakingMilkMechanic belum diatur!");
-        }
+        hoverBotol.SetActive(false);
+        hoverBotol.SetActive(false);
     }
 
     void Update()
@@ -73,13 +74,22 @@ public class SendokSusu : MonoBehaviour
         {
             sendokSpriteImage.sprite = sendokBerisiSprite;
             isSendokKosong = false;
+            hoverKaleng.SetActive(true);
             Debug.Log("Sendok diisi susu.");
         }
         else if (other.CompareTag("BotolSusu") && !isSendokKosong)
         {
             sendokSpriteImage.sprite = sendokKosongSprite;
             isSendokKosong = true;
+            hoverBotol.SetActive(true);
             makingMilkScript.TambahTuangan();
         }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.CompareTag("KalengSusu")) { hoverKaleng.SetActive(false); }
+
+        if (other.CompareTag("BotolSusu")) { hoverBotol.SetActive(false); }
     }
 }

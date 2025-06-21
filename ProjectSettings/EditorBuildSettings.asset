@@ -6,9 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/_PROJECT/Scenes/Main Menu.unity
+    guid: c41fc117bf462af4fb4328eb10ed2456
+  - enabled: 1
     path: Assets/_PROJECT/Scenes/Act-1_Scene1_KamarIbu.unity
     guid: 8c9cfa26abfee488c85f1582747f6a02
   - enabled: 1
     path: Assets/_PROJECT/Scenes/Act-1_Scene2_RuangTamu.unity
-    guid: 3f1f71a632a624d4282dfc97dce2cb99
+    guid: 02ffb81d5cc47a24782b34d9d113c816
+  - enabled: 1
+    path: Assets/_PROJECT/Scenes/Act-1_Scene3_KamarMandi.unity
+    guid: 939f613b762971f428df41437a873138
   m_configObjects: {}

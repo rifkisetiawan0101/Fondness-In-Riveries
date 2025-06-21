@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using DIALOGUE;
 
 public class GetWater : MonoBehaviour
 {
@@ -12,8 +13,14 @@ public class GetWater : MonoBehaviour
     [SerializeField] private GameObject baskom;
     [SerializeField] private GameObject triggerUI;
 
+    [SerializeField] private SpaceMechanic spaceMechanic;
+
+    void Start() {
+        spaceMechanic = GetComponent<SpaceMechanic>();
+    }
+
     void Update()
-    {   
+    {
         if (Input.GetKeyDown(KeyCode.E) && isMechanicActive)
         {
             triggerUI.SetActive(false);
@@ -21,13 +28,16 @@ public class GetWater : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isMechanicDone)
-        {   
+        {
             triggerUI.SetActive(true);
-            currentMechanic.SetActive(false);
-            MechanicsManager.Instance.isOpenMechanic = false;
             baskom.SetActive(true);
             isMechanicDone = false;
             isMechanicActive = false;
+        }
+        
+        if (MechanicsManager.Instance.isGetWaterPlayed && !DialogueManager.instance.isRunningConversation)
+        {
+            StartCoroutine(spaceMechanic.CloseMechanic(0.7f)); // klik space
         }
     }
 

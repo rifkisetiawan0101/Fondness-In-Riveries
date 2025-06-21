@@ -14,7 +14,7 @@ namespace DIALOGUE
                 Destroy(gameObject); // Menghindari duplikasi instance
                 return;
             } else Instance = this;
-            DontDestroyOnLoad(gameObject); // Jika perlu instance bertahan antar scene
+            DontDestroyOnLoad(gameObject);
         }
 
         private DialogueManager dialogueManager => DialogueManager.instance;
@@ -24,6 +24,11 @@ namespace DIALOGUE
 
         // samain architect nya dengan yang ada di DialogueManager
         private DialogueArchitect architect = null;
+
+        [Header("Dialogue Next")]
+        public int currentLineIndex = 0;
+        public List<string> currentConversation;
+        public bool HasNextLine => currentLineIndex < currentConversation?.Count - 1;
         public ConversationManager(DialogueArchitect architect)
         {
             this.architect = architect;
@@ -37,6 +42,8 @@ namespace DIALOGUE
 
         public void StartConversation(List<string> conversation)
         {
+            currentLineIndex = 0;
+            currentConversation = conversation;
             StopConversation();
             process = dialogueManager.StartCoroutine(RunningConversation(conversation));
         }
@@ -50,16 +57,18 @@ namespace DIALOGUE
             process = null;
         }
 
+        
         IEnumerator RunningConversation(List<string> conversation)
         {
-            dialogueManager.dialogueContainer.SetActive(true);
-            for(int i = 0; i < conversation.Count; i++)
+            // MechanicsManager.Instance.isOpenMechanic = true;
+            for (int i = 0; i < conversation.Count; i++)
             {
+                currentLineIndex = i;
                 if (string.IsNullOrWhiteSpace(conversation[i]))
                     continue;
 
                 DIALOGUE_LINE line = DialogueParser.Parse(conversation[i]);
-                
+
                 //Show dialogue
                 if (line.hasDialogue)
                     yield return Line_RunDialogue(line);
@@ -67,7 +76,8 @@ namespace DIALOGUE
                 if (line.hasCommands)
                     yield return Line_RunCommands(line);
             }
-            dialogueManager.dialogueContainer.SetActive(false);
+            currentLineIndex = 0;
+            currentConversation = null;
         }
 
         IEnumerator Line_RunDialogue(DIALOGUE_LINE line)

@@ -143,9 +143,4 @@ public class PhotoMemoryAct_1 : MonoBehaviour
 
         whiteFlash.color = flashColor;
     }
-
-    // private IEnumerator CloseMechanic()
-    // {
-
-    // }
 }

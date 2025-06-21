@@ -1,97 +1,72 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Video;
+using UnityEngine.UI;
+using DIALOGUE;
 
 public class GivingMilk : MonoBehaviour
 {
-    [SerializeField] private GameObject currentMechanic;
-    public Animator animator; 
-    public string animationTrigger = "PlayAnimation"; 
-    public GameObject cutScene;
-    public bool isMechanicActive;
+    private bool carryBabyOnce;
+    [SerializeField] private GameObject arrelInObj;
 
-    private bool isMechanicDone;
-    [SerializeField] private GameObject triggerUI;
-    [SerializeField] private GameObject giveMilk;
-    [SerializeField] private GameObject arrel;
-    [SerializeField] private GameObject arrelBawa;
-    [SerializeField] private GameObject botolBawa;
+    SpaceMechanic spaceMechanic;
+    private void Start()
+    {
+        spaceMechanic = GetComponent<SpaceMechanic>();
+    }
+
+    void OnEnable()
+    {
+        spaceMechanic = GetComponent<SpaceMechanic>();
+    }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && isMechanicActive && !MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
-        {   
-            triggerUI.SetActive(false);
-            StartCoroutine(PlayAnimation());
-        } 
-        else if (Input.GetKeyDown(KeyCode.E) && isMechanicActive && MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
-        {   
-            MechanicsManager.Instance.isGivingMilkPlayed2 = true;
-            triggerUI.SetActive(false);
-            arrel.SetActive(false);
-        }
-        else if (Input.GetKeyDown(KeyCode.E) && isMechanicActive && MechanicsManager.Instance.isPourWaterPlayed && MechanicsManager.Instance.isBathingBabyPlayed)
+        if (MechanicsManager.Instance.isGivingMilkOpened && !MechanicsManager.Instance.isGivingMilkPlayed)
         {
-            MechanicsManager.Instance.isGivingMilkPlayed3 = true;
-            triggerUI.SetActive(false);
-            arrel.SetActive(true);
-            MechanicsManager.Instance.isGetBackBaby = true;
+            StartCoroutine(PlayCutScene());// nyusuin
+            PlayerMovement.Instance.isCarryBottle = false;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isMechanicActive && MechanicsManager.Instance.isGivingMilkDialoguePlayed && !MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
-        {   
-            StartCoroutine(SetBoolAfterDelay());
-            botolBawa.SetActive(false);
-            triggerUI.SetActive(true);
-            giveMilk.SetActive(false);
-            currentMechanic.SetActive(false);
-            MechanicsManager.Instance.isOpenMechanic = false;
-            isMechanicActive = false;
-            isMechanicDone = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.Space) && isMechanicActive && MechanicsManager.Instance.isGivingMilkPlayed2 && MechanicsManager.Instance.isPourWaterPlayed && !MechanicsManager.Instance.isBathingBabyPlayed)
+        if (MechanicsManager.Instance.isPourWaterPlayed && MechanicsManager.Instance.isGivingMilkPlayed2 && !MechanicsManager.Instance.isBathingBabyPlayed && !carryBabyOnce)
         {
-            MechanicsManager.Instance.isCarryingArrelToBath = true;
-            Debug.Log($"isCarryingArrelToBath: {MechanicsManager.Instance.isCarryingArrelToBath}");
-            arrelBawa.SetActive(true);
-            triggerUI.SetActive(true);
-            currentMechanic.SetActive(false);
-            isMechanicActive = false;
-            MechanicsManager.Instance.isOpenMechanic = false;
+            carryBabyOnce = true;
+            arrelInObj.SetActive(false);//ngambil arel
+            PlayerMovement.Instance.isCarryBaby = true;
         }
-        else if (Input.GetKeyDown(KeyCode.Space) && isMechanicActive && MechanicsManager.Instance.isGivingMilkPlayed3 && MechanicsManager.Instance.isBathingBabyPlayed && MechanicsManager.Instance.isGetBackBaby) 
+
+        if (MechanicsManager.Instance.isBathingBabyPlayed && MechanicsManager.Instance.isGivingMilkPlayed3 && carryBabyOnce)
         {
-            arrelBawa.SetActive(false);
-            currentMechanic.SetActive(false);
-            MechanicsManager.Instance.isOpenMechanic = false;
-            isMechanicActive = false;
-            isMechanicDone = true;
+            carryBabyOnce = false;
+            arrelInObj.SetActive(true);// naro arel
+            PlayerMovement.Instance.isCarryBaby = false;
+        }
+
+        if (MechanicsManager.Instance.isGivingMilkPlayed && !DialogueManager.instance.isRunningConversation)
+        {
+            StartCoroutine(spaceMechanic.CloseMechanic(0.7f)); // klik space
         }
     }
 
-    private IEnumerator PlayAnimation()
-    {
-        animator.SetTrigger(animationTrigger);
-        //float animationDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(2.13f);
-        MechanicsManager.Instance.isNowGivingMilk = true;
-        yield return new WaitUntil(() => !MechanicsManager.Instance.isNowGivingMilk);
-        PlayVideo();
-        Debug.Log("Video diputar");
-        yield return new WaitForSeconds(13f);
-        cutScene.SetActive(false);
-        isMechanicDone = true;
-        MechanicsManager.Instance.isGivingMilkPlayed = true;
-    }
+    [Header("Cutscene")]
+    [SerializeField] private Image cutSceneImage;
+    [SerializeField] private Sprite[] cutSceneFrames;
+    [SerializeField] private Sprite cutSceneFramesWet;
+    private bool isPlayingAnimation = false;
 
-    private IEnumerator SetBoolAfterDelay()
+    private IEnumerator PlayCutScene()
     {
-        yield return new WaitForSeconds(0.5f);
-        MechanicsManager.Instance.isGoingToGetWater = true;
-    }
-
-    private void PlayVideo()
-    {
-        cutScene.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        if (!isPlayingAnimation)
+        {
+            isPlayingAnimation = true;
+            for (int i = 0; i < cutSceneFrames.Length; i++)
+            {
+                cutSceneImage.sprite = cutSceneFrames[i];
+                yield return new WaitForSeconds(2f);
+            }
+            yield return new WaitUntil(() => DialogueTrigger.Instance.isGivingMilk_20Played);
+            yield return new WaitForSeconds(1f);
+            cutSceneImage.sprite = cutSceneFramesWet;
+        }
     }
 }

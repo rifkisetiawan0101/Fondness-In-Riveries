@@ -11,6 +11,12 @@ public class BoilWater : MonoBehaviour
     private bool isMechanicDone;
     [SerializeField] private GameObject triggerUI;
 
+    [SerializeField] private SpaceMechanic spaceMechanic;
+
+    private void Start() {
+        spaceMechanic = GetComponent<SpaceMechanic>();
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E) && isMechanicActive)
@@ -20,14 +26,13 @@ public class BoilWater : MonoBehaviour
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && isMechanicDone)
-        {   
+        {
             triggerUI.SetActive(true);
-            currentMechanic.SetActive(false);
             isMechanicActive = false;
             isMechanicDone = false;
-            MechanicsManager.Instance.isOpenMechanic = false;
             MechanicsManager.Instance.isBoilWaterPlayed = true;
-
+            
+            StartCoroutine(spaceMechanic.CloseMechanic(0.7f)); // klik space
         }
     }
 

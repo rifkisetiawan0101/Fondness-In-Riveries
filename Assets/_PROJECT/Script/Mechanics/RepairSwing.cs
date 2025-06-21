@@ -25,8 +25,11 @@ public class RepairSwing : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     [SerializeField] private RectTransform canvasRect;
     private bool isFabricClick = false;
 
+    [SerializeField] private SpaceMechanic spaceMechanic;
+
     private void Start()
     {
+        spaceMechanic = GetComponent<SpaceMechanic>();
         fabricLeftStartPos = fabricLeftRect.anchoredPosition;
         fabricRightStartPos = fabricRightRect.anchoredPosition;
         fabricCenter.GetComponent<Button>().interactable = false;
@@ -98,65 +101,15 @@ public class RepairSwing : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private IEnumerator OnFabricCenterClicked()
     {
-        yield return StartCoroutine(FadeInPanel(panelBaby, 0.5f));
+        panelBaby.GetComponent<FadeImage>().FadeIn(0.7f);
+        yield return new WaitForSeconds(0.7f);
 
         // Tandai bahwa mekanik sudah dimainkan
         MechanicsManager.Instance.isRepairSwingPlayed = true;
-        yield return new WaitForSeconds(0.6f);
+        yield return new WaitForSeconds(0.5f);
         yield return new WaitUntil(() => !DialogueManager.instance.isRunningConversation);
 
-        yield return StartCoroutine(FadeOutPanel(panelBaby, 0.5f));
-    }
-
-    // Fungsi untuk menaikkan transparansi panel
-    private IEnumerator FadeInPanel(GameObject panel, float duration)
-    {
-        panel.SetActive(true);
-        Image panelImage = panel.GetComponent<Image>();
-        if (panelImage != null)
-        {
-            Color panelColor = panelImage.color;
-            panelColor.a = 0;
-            panelImage.color = panelColor;
-
-            float elapsedTime = 0;
-            while (elapsedTime < duration)
-            {
-                elapsedTime += Time.deltaTime;
-                float alpha = Mathf.Clamp01(elapsedTime / duration);
-                panelColor.a = alpha;
-                panelImage.color = panelColor;
-                yield return null;
-            }
-
-            panelColor.a = 1;
-            panelImage.color = panelColor;
-        }
-    }
-
-    // Fungsi untuk menurunkan transparansi panel
-    private IEnumerator FadeOutPanel(GameObject panel, float duration)
-    {
-        Image panelImage = panel.GetComponent<Image>();
-        if (panelImage != null)
-        {
-            Color panelColor = panelImage.color;
-            panelColor.a = 1;
-            panelImage.color = panelColor;
-
-            float elapsedTime = 0;
-            while (elapsedTime < duration)
-            {
-                elapsedTime += Time.deltaTime;
-                float alpha = Mathf.Clamp01(1 - (elapsedTime / duration));
-                panelColor.a = alpha;
-                panelImage.color = panelColor;
-                yield return null;
-            }
-
-            panelColor.a = 0;
-            panelImage.color = panelColor;
-        }
-        panel.SetActive(false);
+        panelBaby.GetComponent<FadeImage>().FadeOut(0.7f);
+        yield return new WaitForSeconds(0.7f);
     }
 }

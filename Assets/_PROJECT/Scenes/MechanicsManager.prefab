@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4788934285850885784
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5270403080956955687}
+  - component: {fileID: 5240160129769119278}
+  m_Layer: 0
+  m_Name: MechanicsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5270403080956955687
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788934285850885784}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5240160129769119278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4788934285850885784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33e44fec7eab7874085cd624df0e238a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isGameStart: 0
+  isOpenMechanic: 0
+  currentTriggerMechanic: 
+  isScene1Loaded: 0
+  isScene2Loaded: 0
+  isScene3Loaded: 0
+  isSwingingBabyToSleepOpened: 0
+  isSwingComplete: 0
+  isPutBabySleep: 0
+  isBabyPanelOpened1: 0
+  isBabyPanelOpened2: 0
+  isSwingingBabyToSleepPlayed: 0
+  isCloseCurtainOpened: 0
+  isCloseCurtainPlayed: 0
+  isTurnOffLampOpened: 0
+  isTurnOffLampPlayed: 0
+  isInteractPhoto_1Opened: 0
+  isInteractPhoto_2Opened: 0
+  isInteractPhoto_3Opened: 0
+  isInteractPhoto_4Opened: 0
+  isCameraCollected: 0
+  isGrandmaDoorOpened: 0
+  isTDLCollected: 0
+  isTDLOpen: 0
+  isMakingMilkOpened: 0
+  isMakingMilkPlayed: 0
+  isGivingMilkOpened: 0
+  isGivingMilkPlayed: 0
+  isGivingMilkPlayed2: 0
+  isGivingMilkPlayed3: 0
+  isGetHotWater: 0
+  isGetWaterOpened: 0
+  isGoingToGetWater: 0
+  isGetWaterPlayed: 0
+  isBoilWaterOpened: 0
+  isBoilWaterPlayed: 0
+  isPourWaterOpened: 0
+  isPourWaterPlayed: 0
+  isCarryingArrelToBath: 0
+  isBathingBabyOpened: 0
+  isBathingBabyDialoguePlayed: 0
+  isBathingBabyPlayed: 0
+  isRepairSwingOpened: 0
+  isRepairSwingPlayed: 0
+  isCameraReady: 0
+  isCameraOpened: 0
+  isPhotoTaken: 0
+  isDiaryOpened: 0
+  isPhotoDragged: 0
+  allMechanicsFlags: 

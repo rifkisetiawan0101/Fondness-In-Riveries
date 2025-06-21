@@ -6,6 +6,7 @@ using DIALOGUE;
 
 public class DiaryBook : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    [SerializeField] private bool isDiaryOpen;
     [SerializeField] private GameObject diaryMechanic;
     [SerializeField] private GameObject photo;
     [SerializeField] private bool isDraggingPhoto;
@@ -15,8 +16,11 @@ public class DiaryBook : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     [SerializeField] private RectTransform photoRect;
     [SerializeField] private RectTransform canvasRect;
 
+    [SerializeField] private SpaceMechanic spaceMechanic;
+
     private void Start()
     {
+        spaceMechanic = GetComponent<SpaceMechanic>();
         photoStartPos = photoRect.anchoredPosition;
     }
 
@@ -26,6 +30,21 @@ public class DiaryBook : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         {
             diaryMechanic.SetActive(false);
             MechanicsManager.Instance.isOpenMechanic = false;
+        }
+
+        if (MechanicsManager.Instance.isDiaryOpened && !MechanicsManager.Instance.isOpenMechanic && Input.GetKeyDown(KeyCode.B))
+        {
+            isDiaryOpen = !isDiaryOpen;
+            MechanicsManager.Instance.isDiaryOpened = isDiaryOpen;
+
+            if (isDiaryOpen)
+            {
+                StartCoroutine(spaceMechanic.CloseItem(0.7f));
+            }
+            else
+            {
+                StartCoroutine(spaceMechanic.OpenItem(0.7f));
+            }
         }
     }
 

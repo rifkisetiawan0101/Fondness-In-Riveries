@@ -1,0 +1,109 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3228002157468195680
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5459447670164206210}
+  - component: {fileID: 4913396046330608981}
+  m_Layer: 0
+  m_Name: DialogTrigger Act-1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5459447670164206210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3228002157468195680}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4913396046330608981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3228002157468195680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4bb1a681191dc5449b37d82eb7ff99be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cutscenePlayer: {fileID: 0}
+  currentDialogue: {fileID: 0}
+  cutcenePrologue_0: {fileID: 4900000, guid: a2768c3987504fc409c35388805b25c9, type: 3}
+  startHumming_1: {fileID: 4900000, guid: 8dd4fd94b2b445e47af36561b338a0ba, type: 3}
+  moveSideScroll_2: {fileID: 4900000, guid: bc8fa2ced5006c146a0df140953fde7f, type: 3}
+  swingingBaby_3: {fileID: 4900000, guid: 82edfd3fd6a1859439fc66f80098e805, type: 3}
+  putSleepBaby_4: {fileID: 4900000, guid: 4d23b4d3079b44d4b984634f44531deb, type: 3}
+  closeCurtain_5: {fileID: 4900000, guid: 29b031a47b3aa3d4583feaede472d1a7, type: 3}
+  afterCurtain_6: {fileID: 4900000, guid: 06e6d32011b5034499817ce1f62e8131, type: 3}
+  turnOffLamp_7: {fileID: 4900000, guid: 8a6ee9ee316182e4785db2f3c514113d, type: 3}
+  interactPhoto1_8: {fileID: 4900000, guid: 6db523949a1448647856aa04a4d6916f, type: 3}
+  interactPhoto2_9: {fileID: 4900000, guid: a1b84a45780bda14bb89906c01af2bcd, type: 3}
+  interactPhoto3_10: {fileID: 4900000, guid: 846772f40ad66a749a014d3daa98a0e8, type: 3}
+  interactPhoto4_11: {fileID: 4900000, guid: 1a118c28a24319447a206208c8b2c5de, type: 3}
+  searchCamera_12: {fileID: 4900000, guid: 2faeadeaec7f49144aa9e37a0019b8a8, type: 3}
+  collectCamera_13: {fileID: 4900000, guid: cea0241e5c1375847a9e7f88346b7849, type: 3}
+  grandmaDoor_14: {fileID: 4900000, guid: 469cd1cce2fddf54fb5dc9faefcb7a1f, type: 3}
+  collectTDL_15: {fileID: 4900000, guid: d6a2843454174514db54f3c4fd5bb514, type: 3}
+  makingMilk_16: {fileID: 4900000, guid: dcb3679387473d242bc66b79a95e8db9, type: 3}
+  afterMakingMilk_17: {fileID: 4900000, guid: 7d329d386aaf0c34cbe410d03d2ddf6c, type: 3}
+  givingMilk_18: {fileID: 4900000, guid: 36f36e4044e39354aba73e5967d36fbb, type: 3}
+  afterGivingMilk_19: {fileID: 4900000, guid: 075ce4cc1d47297458df24f50c298f19, type: 3}
+  getWater_20: {fileID: 4900000, guid: bf903e68d29c2664589ae30b048c880e, type: 3}
+  pourWater_21: {fileID: 4900000, guid: d0bd0501991cce340962c22ce904a04d, type: 3}
+  bathingBaby_22: {fileID: 4900000, guid: 32ef04b9d34f5b94dbc834c3135e9638, type: 3}
+  repairSwing_23: {fileID: 4900000, guid: 838a2d110e5da224ea636e87c942ca0a, type: 3}
+  doneSwing_24: {fileID: 4900000, guid: 5bfd22b0a903c1140b3d02de8d622f63, type: 3}
+  openCamera_25: {fileID: 4900000, guid: c67d2c576d91baa40bfa04643f6cf1b7, type: 3}
+  photoTaken_26: {fileID: 4900000, guid: acbc7d6e4783f8841a346ade2d4ea195, type: 3}
+  openDiary_27: {fileID: 4900000, guid: d6831f76e0caf4f46a984924a2253d76, type: 3}
+  dragPhoto_28: {fileID: 4900000, guid: 6ab78112185edf64f8358e2e2271134b, type: 3}
+  showDiary_29: {fileID: 4900000, guid: c09da07a2c14de64696e509ef2401b0f, type: 3}
+  allDialogueFlags: 
+  isCutcenePrologue_0Played: 0
+  isStartHumming_1Played: 0
+  isMoveSideScroll_2Played: 0
+  isSwingingBaby_3Played: 0
+  isPutBabySleep_4Played: 0
+  isCloseCurtain_5Played: 0
+  isAfterCurtain_6Played: 0
+  isTurnOffLamp_7Played: 0
+  isPlayInteractPhoto1_8Played: 0
+  isPlayInteractPhoto2_9Played: 0
+  isPlayInteractPhoto3_10Played: 0
+  isPlayInteractPhoto4_11Played: 0
+  isSearchCamera_12Played: 0
+  isCollectCamera_13Played: 0
+  isGrandmaDoor_14Played: 0
+  isCollectTDL_15Played: 0
+  isMakingMilk_16Played: 0
+  isAfterMakingMilk_17Played: 0
+  isGivingMilk_18Played: 0
+  isAfterGivingMilk_19Played: 0
+  isGetWater_20Played: 0
+  isPourWater_21Played: 0
+  isBathingBaby_22Played: 0
+  isRepairSwing_23Played: 0
+  isDoneSwing_24Played: 0
+  isOpenCamera_25Played: 0
+  isPhotoTaken_26Played: 0
+  isOpenDiary_27Played: 0
+  isDragPhoto_28Played: 0
+  isShowDiary_29Played: 0

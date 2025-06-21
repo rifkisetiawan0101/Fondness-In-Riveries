@@ -1,115 +1,83 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
-using System.Collections.Generic;
 
 public class BathingBaby : MonoBehaviour
 {
-    [SerializeField] private GameObject currentMechanic;
     public bool isMechanicActive;
     private bool isMechanicDone;
-    private bool isWashing;
-    private bool isArrelInTub;
-    private float washingTime = 0f;
-    private float washingDuration = 5f;
+    [SerializeField] private SpaceMechanic spaceMechanic;
 
-    [SerializeField] private GameObject triggerUI;
-    [SerializeField] private Image arrelTub;
-    [SerializeField] private Sprite ArrelEmptyTub;
-    [SerializeField] private Sprite ArrelTub;
+    [Header("Noda Settings")]
+    [SerializeField] private GameObject noda1;
+    [SerializeField] private GameObject noda2;
+    [SerializeField] private float waktuGosok = 2f; // waktu gosok per noda
 
-    private GraphicRaycaster graphicRaycaster;
-    private PointerEventData pointerEventData;
-    private EventSystem eventSystem;
+    private float noda1Timer = 0f;
+    private float noda2Timer = 0f;
+    private bool noda1Bersih = false;
+    private bool noda2Bersih = false;
 
     void Start()
     {
-        triggerUI.SetActive(true);
-        graphicRaycaster = arrelTub.canvas.GetComponent<GraphicRaycaster>();
-        eventSystem = EventSystem.current;
-        if (eventSystem == null)
-        {
-            GameObject eventSystemObject = new GameObject("EventSystem");
-            eventSystem = eventSystemObject.AddComponent<EventSystem>();
-        }
-        pointerEventData = new PointerEventData(eventSystem);
+        spaceMechanic = GetComponent<SpaceMechanic>();
+        noda1.SetActive(true);
+        noda2.SetActive(true);
+        noda1Bersih = false;
+        noda2Bersih = false;
+        noda1Timer = 0f;
+        noda2Timer = 0f;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        // Gosok noda1
+        if (!noda1Bersih && Input.GetMouseButton(0))
         {
-            if (isMechanicActive && MechanicsManager.Instance.isCarryingArrelToBath)
+            noda1Timer += Time.deltaTime;
+            if (noda1Timer >= waktuGosok)
+            {
+                noda1Bersih = true;
+                noda1.SetActive(false);
+                Debug.Log("Noda 1 hilang!");
+            }
+        }
+
+        // Gosok noda2
+        if (!noda2Bersih && Input.GetMouseButton(1))
+        {
+            noda2Timer += Time.deltaTime;
+            if (noda2Timer >= waktuGosok)
+            {
+                noda2Bersih = true;
+                noda2.SetActive(false);
+                Debug.Log("Noda 2 hilang!");
+            }
+        }
+
+        // Jika kedua noda sudah bersih
+        if (noda1Bersih && noda2Bersih && !isMechanicDone)
+        {
+            isMechanicDone = true;
+            MechanicsManager.Instance.isBathingBabyPlayed = true;
+            Debug.Log("Mekanisme selesai! Arrel sudah bersih!");
+        }
+
+        bool activeOnce = false;
+        if (DialogueTrigger.Instance.isBathingBaby_24Played && !activeOnce)
+        {
+            activeOnce = true;
+            StartCoroutine(spaceMechanic.CloseMechanic(0.7f));
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && DialogueTrigger.Instance.isBathingBaby_24Played && isMechanicDone == false)
             {
                 isMechanicActive = false;
-                triggerUI.SetActive(false);
+                noda1Timer = 0f;
+                noda2Timer = 0f;
+                MechanicsManager.Instance.isCarryingArrelToBath = false;
 
-                if (!isArrelInTub && !isMechanicDone)
-                {
-                    arrelTub.sprite = ArrelTub;
-                    isArrelInTub = true;
-                    isWashing = true;
-                    washingTime = 0f;
-                    Debug.Log("Ayo mulai menggosok Arrel!");
-                }
+                Debug.Log("Keluar Mekanisme dan isCarryingArrelToBath dimatikan.");
+
+                StartCoroutine(spaceMechanic.CloseMechanic(0.7f)); // klik space
             }
-            else if (isMechanicDone && MechanicsManager.Instance.isBathingBabyDialoguePlayed)
-            {
-                arrelTub.sprite = ArrelEmptyTub;
-                isArrelInTub = false;
-                isMechanicDone = false;
-                Debug.Log("Selesai menggosok, Arrel sudah diangkat");
-                triggerUI.SetActive(false);
-            }
-        }
-
-        if (isWashing && Input.GetMouseButton(0))
-        {
-            pointerEventData.position = Input.mousePosition;
-            List<RaycastResult> results = new List<RaycastResult>();
-            graphicRaycaster.Raycast(pointerEventData, results);
-
-            foreach (RaycastResult result in results)
-            {
-                if (result.gameObject == arrelTub.gameObject)
-                {
-                    washingTime += Time.deltaTime;
-                    Debug.Log("Menggosok Arrel... Waktu: " + washingTime.ToString("F2") + " detik");
-
-                    if (washingTime >= washingDuration)
-                    {
-                        isWashing = false;
-                        isMechanicDone = true;
-                        MechanicsManager.Instance.isBathingBabyPlayed = true;
-                        Debug.Log("Mekanisme selesai! Arrell sudah bersih!");
-                    }
-                    return;
-                }
-            }
-
-            Debug.Log("Klik tidak terdeteksi pada arrelTub! Pastikan klik pada objek yang benar.");
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && MechanicsManager.Instance.isBathingBabyPlayed && isMechanicDone == false)
-        {
-            currentMechanic.SetActive(false);
-            isMechanicActive = false;
-            isWashing = false;
-            isArrelInTub = false;
-            washingTime = 0f;
-            MechanicsManager.Instance.isOpenMechanic = false;
-            MechanicsManager.Instance.isCarryingArrelToBath = false;
-
-            Debug.Log("Keluar Mekanisme dan isCarryingArrelToBath dimatikan.");
-        }
-
-        if (!triggerUI.activeSelf && MechanicsManager.Instance.isBathingBabyDialoguePlayed && isMechanicDone)
-        {
-            triggerUI.SetActive(true);
-        }
-        else if (!triggerUI.activeSelf && MechanicsManager.Instance.isBathingBabyDialoguePlayed && !isMechanicDone)
-        {
-            triggerUI.SetActive(false);
-        }
     }
 }
